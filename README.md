@@ -32,17 +32,63 @@
 
 啟動後可透過 Swagger UI 或 Postman 測試 API 端點。
 
-## 範例 API 端點
+## 範例 API 端點與 API 規格
 
 | 方法   | 路徑                | 說明         |
 |--------|---------------------|--------------|
-| GET    | /api/user           | 取得所有使用者 |
+| GET    | /api/user           | 取得所有使用者（支援分頁、排序） |
 | GET    | /api/user/{id}      | 取得單一使用者 |
 | POST   | /api/user           | 新增使用者     |
 | PUT    | /api/user/{id}      | 更新使用者     |
 | DELETE | /api/user/{id}      | 刪除使用者     |
 
-> 實際端點請依 Controllers 內容為主，啟動後可於 Swagger UI 查看完整 API 文件。
+### 取得分頁使用者清單
+- **GET** `/api/user`
+- **查詢參數**：
+  - `page`：頁碼（預設 1）
+  - `pageSize`：每頁筆數（預設 10）
+  - `sortBy`：排序欄位（如 Name、Email）
+  - `desc`：是否倒序（true/false）
+- **回應**：`PagedResult<UserViewModel>`
+
+### 取得單一使用者
+- **GET** `/api/user/{id}`
+- **路徑參數**：
+  - `id`：使用者 Id
+- **回應**：`UserViewModel`，找不到時回傳 404
+
+### 新增使用者
+- **POST** `/api/user`
+- **Body**：
+  ```json
+  {
+    "name": "string",
+    "email": "string"
+  }
+  ```
+- **回應**：`UserViewModel`（含 Id），201 Created
+
+### 更新使用者
+- **PUT** `/api/user/{id}`
+- **路徑參數**：
+  - `id`：使用者 Id
+- **Body**：
+  ```json
+  {
+    "id": 1,
+    "name": "string",
+    "email": "string"
+  }
+  ```
+- **回應**：200 OK，找不到時回傳 404
+
+### 刪除使用者
+- **DELETE** `/api/user/{id}`
+- **路徑參數**：
+  - `id`：使用者 Id
+- **回應**：200 OK，找不到時回傳 404
+
+> 詳細欄位與回應格式請參考 Swagger UI。
 
 ## 設定檔
 
